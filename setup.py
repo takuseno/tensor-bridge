@@ -70,7 +70,7 @@ if __name__ == "__main__":
                                 'binding': True
                             })
 
-    setup(name="d3rlpy",
+    setup(name="tensor_bridge",
           version="0.1.0",
           author="Takuma Seno",
           author_email="takuma.seno@gmail.com",

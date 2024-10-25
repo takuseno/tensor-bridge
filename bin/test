@@ -1,0 +1,3 @@
+#!/bin/bash
+
+docker run --gpus all -v .:/tensor-bridge -it --rm takuseno/tensor-bridge:latest scripts/test.sh

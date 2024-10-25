@@ -1,0 +1,3 @@
+#!/bin/bash
+
+docker build -t takuseno/tensor-bridge:latest docker

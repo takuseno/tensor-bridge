@@ -1,3 +1,4 @@
 *__pycache__
 tensor_bridge/tensor_bridge.cpp
 *.so
+*.o
