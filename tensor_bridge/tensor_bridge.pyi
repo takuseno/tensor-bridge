@@ -1,8 +1,7 @@
 from typing import Union
 
-import torch
 import jax
-
+import torch
 
 Array = Union[torch.Tensor, jax.Array]
 

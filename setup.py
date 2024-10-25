@@ -1,11 +1,14 @@
 import os
 import subprocess
 
-from setuptools import setup, Extension, find_packages
 from Cython.Distutils import build_ext
+from setuptools import Extension, find_packages, setup
 
-
-nvcc_path = subprocess.run("which nvcc", shell=True, check=True, capture_output=True).stdout.decode().strip()
+nvcc_path = (
+    subprocess.run("which nvcc", shell=True, check=True, capture_output=True)
+    .stdout.decode()
+    .strip()
+)
 
 
 def customize_compiler_for_nvcc(self):
@@ -20,7 +23,7 @@ def customize_compiler_for_nvcc(self):
     """
 
     # Tell the compiler it can processes .cu
-    self.src_extensions.append('.cu')
+    self.src_extensions.append(".cu")
 
     # Save references to the default compiler_so and _comple methods
     default_compiler_so = self.compiler_so
@@ -30,14 +33,14 @@ def customize_compiler_for_nvcc(self):
     # object but distutils doesn't have the ability to change compilers
     # based on source extension: we add it.
     def _compile(obj, src, ext, cc_args, extra_postargs, pp_opts):
-        if os.path.splitext(src)[1] == '.cu':
+        if os.path.splitext(src)[1] == ".cu":
             # use the cuda for .cu files
-            self.set_executable('compiler_so', nvcc_path)
+            self.set_executable("compiler_so", nvcc_path)
             # use only a subset of the extra_postargs, which are 1-1
             # translated from the extra_compile_args in the Extension class
-            postargs = extra_postargs['nvcc']
+            postargs = extra_postargs["nvcc"]
         else:
-            postargs = extra_postargs['gcc']
+            postargs = extra_postargs["gcc"]
 
         super(obj, src, ext, cc_args, postargs, pp_opts)
         # Reset the default compiler_so, which we might have changed for cuda
@@ -58,31 +61,43 @@ if __name__ == "__main__":
     from Cython.Build import cythonize
 
     # setup Cython build
-    ext = Extension('tensor_bridge.tensor_bridge',
-                    sources=['tensor_bridge/native_tensor_bridge.cu', 'tensor_bridge/tensor_bridge.pyx'],
-                    language='c++',
-                    extra_compile_args={"nvcc": ['--compiler-options', "'-fPIC'"], "gcc": []},
-                    extra_link_args=[])
+    ext = Extension(
+        "tensor_bridge.tensor_bridge",
+        sources=[
+            "tensor_bridge/native_tensor_bridge.cu",
+            "tensor_bridge/tensor_bridge.pyx",
+        ],
+        language="c++",
+        extra_compile_args={
+            "nvcc": ["--compiler-options", "'-fPIC'"],
+            "gcc": [],
+        },
+        extra_link_args=[],
+    )
 
-    ext_modules = cythonize([ext],
-                            compiler_directives={
-                                'linetrace': True,
-                                'binding': True
-                            })
+    ext_modules = cythonize(
+        [ext], compiler_directives={"linetrace": True, "binding": True}
+    )
 
-    setup(name="tensor_bridge",
-          version="0.1.0",
-          author="Takuma Seno",
-          author_email="takuma.seno@gmail.com",
-          license="MIT License",
-          packages=find_packages(exclude=["tests*"]),
-          python_requires=">=3.8.0",
-          zip_safe=False,
-          package_data={'tensor_bridge': ['*.pyx',
-                                   '*.pxd',
-                                   '*.hpp',
-                                   '*.cu',
-                                   '*.pyi',
-                                   'py.typed']},
-          cmdclass={"build_ext": custom_build_ext},
-          ext_modules=ext_modules)
+    setup(
+        name="tensor_bridge",
+        version="0.1.0",
+        author="Takuma Seno",
+        author_email="takuma.seno@gmail.com",
+        license="MIT License",
+        packages=find_packages(exclude=["tests*"]),
+        python_requires=">=3.8.0",
+        zip_safe=False,
+        package_data={
+            "tensor_bridge": [
+                "*.pyx",
+                "*.pxd",
+                "*.hpp",
+                "*.cu",
+                "*.pyi",
+                "py.typed",
+            ]
+        },
+        cmdclass={"build_ext": custom_build_ext},
+        ext_modules=ext_modules,
+    )

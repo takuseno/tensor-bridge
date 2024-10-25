@@ -1,0 +1,20 @@
+#!/bin/bash -ex
+
+if [[ -z $CI ]]; then
+  ISORT_ARG=""
+  BLACK_ARG=""
+  DOCFORMATTER_ARG="--in-place"
+else
+  ISORT_ARG="--check --diff"
+  BLACK_ARG="--check"
+  DOCFORMATTER_ARG="--check --diff"
+fi
+
+# format package imports
+isort -l 80 --profile black $ISORT_ARG tensor_bridge tests setup.py
+
+# use black for the better type annotations
+black -l 80 $BLACK_ARG tensor_bridge tests setup.py
+
+# format docstrings
+docformatter $DOCFORMATTER_ARG --black --wrap-summaries 80 --wrap-descriptions 80 -r tensor_bridge

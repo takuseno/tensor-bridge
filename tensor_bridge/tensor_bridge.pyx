@@ -1,8 +1,8 @@
-import torch
 import jax
+import torch
 
+from _tensor_bridge cimport DataPtr, native_copy_tensor
 from libcpp.pair cimport pair
-from _tensor_bridge cimport native_copy_tensor, DataPtr
 
 
 cdef DataPtr get_ptr_and_size(data):
