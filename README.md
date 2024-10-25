@@ -38,6 +38,10 @@ copy_tensor_with_assertion(a, b)
 ```
 Since `copy_tensor_with_assertion` does additional GPU-CPU transfer internally, make sure that you switch to `copy_tensor` in your experiments. Otherwise your training loop will be significantly slower.
 
+## Features
+- Fast inter-library tensor copy.
+- Inter-GPU copy (I believe this is supported with the current implementation. But, not tested yet.)
+
 ## Supported deep learning libraries
 - PyTorch
 - Jax
