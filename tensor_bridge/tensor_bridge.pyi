@@ -1,8 +1,3 @@
-from typing import Union
-
-import jax
-import torch
-
-Array = Union[torch.Tensor, jax.Array]
+from .types import Array
 
 def copy_tensor(src: Array, dst: Array) -> None: ...

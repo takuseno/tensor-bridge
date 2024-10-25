@@ -4,3 +4,4 @@ isort==5.13.2
 docformatter==1.7.5
 torch==2.5.0
 jax==0.4.25
+numpy==1.26.4
