@@ -23,7 +23,7 @@ copy_tensor(jax_data, torch_data)
 ```
 
 :warning: Currently, this repository is under active development. Espeically, transfer between different layout of tensors are not implemented yet. I recommend to try `copy_tensor_with_assertion` before starting experiments. `copy_tensor_with_assertion` will raise an error if copy doesn't work.
-If `copy_tensor_with_assertion` raises an error, you need to force the tensor contiguous:
+If `copy_tensor_with_assertion` raises an error, you need to force the tensor to be contiguous:
 ```py
 # PyTorch example
 
