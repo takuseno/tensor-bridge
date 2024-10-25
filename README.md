@@ -22,6 +22,22 @@ copy_tensor(torch_data, jax_data)
 copy_tensor(jax_data, torch_data)
 ```
 
+:warning: Currently, this repository is under active development. Espeically, transfer between different layout of tensors are not implemented yet. I recommend to try `copy_tensor_with_assertion` before starting experiments. `copy_tensor_with_assertion` will raise an error if copy doesn't work.
+If `copy_tensor_with_assertion` raises an error, you need to force the tensor contiguous:
+```py
+# PyTorch example
+
+# different layout raises an error
+a = torch.rand(2, 3, device="cuda:0")
+b = torch.rand(3, 2, device="cuda:0").transpose(0, 1)
+copy_tensor_with_assertion(a, b)  # AssertionError !!
+
+# make both tensors contiguous layout
+b = b.contiguous()
+copy_tensor_with_assertion(a, b)
+```
+Since `copy_tensor_with_assertion` does additional GPU-CPU transfer internally, make sure that you switch to `copy_tensor` in your experiments. Otherwise your training loop will be significantly slower.
+
 ## Supported deep learning libraries
 - PyTorch
 - Jax

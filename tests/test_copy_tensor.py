@@ -1,9 +1,10 @@
 import jax
 import jax.numpy as jnp
 import numpy as np
+import pytest
 import torch
 
-from tensor_bridge import copy_tensor
+from tensor_bridge import copy_tensor, copy_tensor_with_assertion
 
 
 def test_copy_tensor_between_torch() -> None:
@@ -40,3 +41,23 @@ def test_copy_tensor_between_torch_and_jax() -> None:
     copy_tensor(torch_data, jax_data)
 
     assert np.all(torch_data.cpu().numpy() == np.array(jax_data))
+
+
+def test_copy_tensor_with_assertion() -> None:
+    # same layout
+    a = torch.rand(2, 3, 4, device="cuda:0")
+    b = torch.rand(2, 3, 4, device="cuda:0")
+    assert not torch.all(a == b)
+    copy_tensor_with_assertion(a, b)
+    assert torch.all(a == b)
+
+    # different layout
+    a = torch.rand(2, 3, device="cuda:0")
+    b = torch.rand(3, 2, device="cuda:0").transpose(0, 1)
+    with pytest.raises(AssertionError):
+        copy_tensor_with_assertion(a, b)
+
+    # make it contiguous
+    b = b.contiguous()
+    copy_tensor_with_assertion(a, b)
+    assert torch.all(a == b)
