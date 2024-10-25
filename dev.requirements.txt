@@ -1,4 +1,6 @@
-black
-mypy
-isort
-docformatter
+black==24.10.0
+mypy==1.13.0
+isort==5.13.2
+docformatter==1.7.5
+torch==2.5.0
+jax==0.4.25
