@@ -4,11 +4,9 @@ import subprocess
 from Cython.Distutils import build_ext
 from setuptools import Extension, find_packages, setup
 
-nvcc_path = (
-    subprocess.run("which nvcc", shell=True, check=True, capture_output=True)
-    .stdout.decode()
-    .strip()
-)
+# get __version__ variable
+here = os.path.abspath(os.path.dirname(__file__))
+exec(open(os.path.join(here, "tensor_bridge", "_version.py")).read())
 
 
 def customize_compiler_for_nvcc(self):
@@ -21,6 +19,15 @@ def customize_compiler_for_nvcc(self):
     the OO route, I have this. Note, it's kindof like a wierd functional
     subclassing going on.
     """
+
+    # Get nvcc path
+    nvcc_path = (
+        subprocess.run(
+            "which nvcc", shell=True, check=True, capture_output=True
+        )
+        .stdout.decode()
+        .strip()
+    )
 
     # Tell the compiler it can processes .cu
     self.src_extensions.append(".cu")
@@ -81,7 +88,11 @@ if __name__ == "__main__":
 
     setup(
         name="tensor_bridge",
-        version="0.1.0",
+        version=__version__,
+        description="Transfer tensors between PyTorch, Jax and more",
+        long_description=open("README.md").read(),
+        long_description_content_type="text/markdown",
+        url="https://github.com/takuseno/tensor-bridge",
         author="Takuma Seno",
         author_email="takuma.seno@gmail.com",
         license="MIT License",
