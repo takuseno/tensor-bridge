@@ -1,0 +1,5 @@
+include tensor_bridge/*.pyx
+include tensor_bridge/*.pxd
+include tensor_bridge/*.cu
+include tensor_bridge/*.hpp
+include tensor_bridge/*.pyi
