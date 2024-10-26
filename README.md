@@ -48,13 +48,16 @@ Since `copy_tensor_with_assertion` does additional GPU-CPU transfer internally, 
 
 
 ## Installation
-### Python 3.10.x
+### PyPI
+If PyPi installation doesn't work, please try installation from source code.
+
+#### Python 3.10.x
 You can install pre-built package.
 ```
 pip install tensor-bridge
 ```
 
-### Other Python version
+#### Other Python version
 Your macine needs to install `nvcc` to compile a native code and `Cython` to compile `.pyx` files.
 ```
 pip install Cython==0.29.36
@@ -62,6 +65,15 @@ pip install tensor-bridge
 ```
 Pre-built packages for other Python versions are in progress.
 
+
+### From souce code
+Your macine needs to install `nvcc` to compile a native code and `Cython` to compile `.pyx` files.
+```
+git clone git@github.com:takuseno/tensor-bridge
+cd tensor-bridge
+pip install Cython==0.29.36
+pip install -e .
+```
 
 ## Unit test
 You machine needs to install NVIDIA's GPU and nvidia-driver to execute tests.
