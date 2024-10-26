@@ -1,7 +1,7 @@
 [![test](https://github.com/takuseno/tensor-bridge/actions/workflows/test.yaml/badge.svg)](https://github.com/takuseno/tensor-bridge/actions/workflows/test.yaml)
 
 # tensor-bridge
-`tensor-bridge` is a light-weight library that achieves inter-library tensor transfer by native `cudaMemcpy` call for minimal overheads.
+`tensor-bridge` is a light-weight library that achieves inter-library tensor transfer by native `cudaMemcpy` call with minimal overheads.
 
 ```py
 import torch
@@ -22,7 +22,7 @@ copy_tensor(torch_data, jax_data)
 copy_tensor(jax_data, torch_data)
 ```
 
-:warning: Currently, this repository is under active development. Espeically, transfer between different layout of tensors are not implemented yet. I recommend to try `copy_tensor_with_assertion` before starting experiments. `copy_tensor_with_assertion` will raise an error if copy doesn't work.
+:warning: Currently, this repository is under active development. Especially, transfer between different layout of tensors is not implemented yet. I recommend to try `copy_tensor_with_assertion` before starting experiments. `copy_tensor_with_assertion` will raise an error if copy doesn't work.
 If `copy_tensor_with_assertion` raises an error, you need to force the tensor to be contiguous:
 ```py
 # PyTorch example
@@ -49,10 +49,10 @@ Since `copy_tensor_with_assertion` does additional GPU-CPU transfer internally, 
 
 ## Installation
 ### PyPI
-If PyPi installation doesn't work, please try installation from source code.
+If pip installation doesn't work, please try installation from source code.
 
 #### Python 3.10.x
-You can install pre-built package.
+You can install a pre-built package.
 ```
 pip install tensor-bridge
 ```
@@ -76,7 +76,7 @@ pip install -e .
 ```
 
 ## Unit test
-You machine needs to install NVIDIA's GPU and nvidia-driver to execute tests.
+Your machine needs to install NVIDIA's GPU and nvidia-driver to execute tests.
 ```
 ./bin/build-docker
 ./bin/test
