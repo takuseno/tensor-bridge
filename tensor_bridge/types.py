@@ -1,11 +1,14 @@
-from typing import Any, Union
+from typing import TYPE_CHECKING, Any, Union
 
-import jax
 import numpy as np
-import torch
+
+if TYPE_CHECKING:
+    import jax
+    import torch
+
 
 __all__ = ["NumpyArray", "Array"]
 
 
 NumpyArray = np.ndarray[Any, Any]
-Array = Union[torch.Tensor, jax.Array]
+Array = Union["torch.Tensor", "jax.Array"]

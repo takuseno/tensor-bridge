@@ -1,16 +1,19 @@
-import jax
 import numpy as np
-import torch
 
+from .imports import get_jax, get_torch
 from .types import Array, NumpyArray
 
 __all__ = ["get_numpy_data"]
 
 
+torch = get_torch()
+jax = get_jax()
+
+
 def get_numpy_data(tensor: Array) -> NumpyArray:
-    if isinstance(tensor, torch.Tensor):
+    if torch is not None and isinstance(tensor, torch.Tensor):
         return tensor.cpu().detach().numpy()  # type: ignore
-    elif isinstance(tensor, jax.Array):
+    elif jax is not None and isinstance(tensor, jax.Array):
         return np.array(tensor)
     else:
         raise ValueError(f"Unsupported tensor type: {type(tensor)}")
