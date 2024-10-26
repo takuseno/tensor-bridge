@@ -4,3 +4,5 @@ tensor_bridge/tensor_bridge.cpp
 *.o
 .python-version
 tensor_bridge.egg-info
+dist
+build/*
