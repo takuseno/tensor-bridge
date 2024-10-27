@@ -15,6 +15,7 @@ def benchmark_copy_tensor() -> None:
     for _ in range(100):
         start = time.time()
         copy_tensor(jax_data, torch_data)
+        copy_tensor(torch_data, jax_data)
         times.append(time.time() - start)
 
     print(f"Average compute time: {sum(times) / len(times)} sec")
@@ -26,7 +27,8 @@ def benchmark_copy_via_cpu() -> None:
     times = []
     for _ in range(100):
         start = time.time()
-        torch.tensor(np.array(jax_data), device="cuda:0")
+        torch_data = torch.tensor(np.array(jax_data), device="cuda:0")
+        jax.numpy.array(torch_data.cpu().numpy())
         times.append(time.time() - start)
 
     print(f"Average compute time: {sum(times) / len(times)} sec")
@@ -38,7 +40,13 @@ def benchmark_dlpack() -> None:
     times = []
     for _ in range(100):
         start = time.time()
-        torch.utils.dlpack.from_dlpack(jax.dlpack.to_dlpack(jax_data))
+        torch_data = torch.from_dlpack(jax.dlpack.to_dlpack(jax_data))
+        # jax.dlpack.from_dlpack(torch.to_dlpack(torch_data))
+        # dlpack conversion above raises an error as follows:
+        # jaxlib.xla_extension.XlaRuntimeError: UNIMPLEMENTED: PJRT C API does not support GetDefaultLayout
+        # But, PyTorch's Tensor class implments __dlpack__ property.
+        # So this works too.
+        jax.dlpack.from_dlpack(torch_data)
         times.append(time.time() - start)
 
     print(f"Average compute time: {sum(times) / len(times)} sec")

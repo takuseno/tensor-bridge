@@ -83,6 +83,7 @@ Your machine needs to install NVIDIA's GPU and nvidia-driver to execute tests.
 ```
 
 ## Benchmark
+To benchmark round trip copies between Jax and PyTorch:
 ```
 ./bin/build-docker
 ./bin/benchmark
@@ -91,11 +92,10 @@ Your machine needs to install NVIDIA's GPU and nvidia-driver to execute tests.
 This is result with my local desktop with RTX4070.
 ```
 Benchmarking copy_tensor...
-Average compute time: 6.899833679199219e-06 sec
+Average compute time: 1.3043880462646485e-05 sec
 Benchmarking copy via CPU...
-Average compute time: 0.00039093732833862306 sec
+Average compute time: 0.0016725873947143555 sec
 Benchmarking dlpack...
-Average compute time: 5.204677581787109e-06 sec
+Average compute time: 7.467031478881836e-05 sec
 ```
-
-Actually, sharing tensors via dlpack is quite fast. However, tensor-bridge could provide faster inter-GPU transfer, which needs more tests to verify.
+`copy_tensor` is surprisingly faster than DLPack. Looking at PyTorch's implementation, it seems that PyTorch does additional CUDA stream synchronization, which adds additional compute time.
