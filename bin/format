@@ -11,10 +11,10 @@ else
 fi
 
 # format package imports
-isort -l 80 --profile black $ISORT_ARG tensor_bridge tests setup.py
+isort -l 80 --profile black $ISORT_ARG tensor_bridge tests setup.py scripts/*.py
 
 # use black for the better type annotations
-black -l 80 $BLACK_ARG tensor_bridge tests setup.py
+black -l 80 $BLACK_ARG tensor_bridge tests setup.py scripts/*.py
 
 # format docstrings
 docformatter $DOCFORMATTER_ARG --black --wrap-summaries 80 --wrap-descriptions 80 -r tensor_bridge

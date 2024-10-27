@@ -81,3 +81,21 @@ Your machine needs to install NVIDIA's GPU and nvidia-driver to execute tests.
 ./bin/build-docker
 ./bin/test
 ```
+
+## Benchmark
+```
+./bin/build-docker
+./bin/benchmark
+```
+
+This is result with my local desktop with RTX4070.
+```
+Benchmarking copy_tensor...
+Average compute time: 6.899833679199219e-06 sec
+Benchmarking copy via CPU...
+Average compute time: 0.00039093732833862306 sec
+Benchmarking dlpack...
+Average compute time: 5.204677581787109e-06 sec
+```
+
+Actually, sharing tensors via dlpack is quite fast. However, tensor-bridge could provide faster inter-GPU transfer, which needs more tests to verify.
