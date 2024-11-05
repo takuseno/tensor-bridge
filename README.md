@@ -45,6 +45,7 @@ Since `copy_tensor_with_assertion` does additional GPU-CPU transfer internally, 
 ## Supported deep learning libraries
 - PyTorch
 - Jax
+- nnabla
 
 
 ## Installation
