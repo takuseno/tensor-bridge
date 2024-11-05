@@ -15,7 +15,7 @@ torch_data = torch.rand(2, 3, 4, device="cuda:0")
 # Jax tensor
 jax_data = jax.random.uniform(jax.random.key(123), shape=(2, 3, 4))
 
-# Copy PyTorch tensor to Jax tensor
+# Copy Jax tensor to PyTorch tensor
 copy_tensor(torch_data, jax_data)
 
 # And, other way around
