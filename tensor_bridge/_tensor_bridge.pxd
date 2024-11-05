@@ -3,4 +3,4 @@ cdef extern from "native_tensor_bridge.hpp" nogil:
         unsigned long ptr
         unsigned long size
         unsigned int device
-    cdef void native_copy_tensor(DataPtr& src, DataPtr& dst)
+    cdef void native_copy_tensor(DataPtr& dst, DataPtr& src)

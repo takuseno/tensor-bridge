@@ -24,9 +24,9 @@ cdef DataPtr get_ptr_and_size(data):
     return ret
 
 
-def copy_tensor(src, dst):
+def copy_tensor(dst, src):
     assert src.shape == dst.shape, f"Shape doesn't match: src={src.shape}, dst={dst.shape}"
     src_ptr = get_ptr_and_size(src)
     dst_ptr = get_ptr_and_size(dst)
     assert src_ptr.size == dst_ptr.size, f"Tensor size doesn't match: src={src_ptr.size}, dst={dst_ptr.size}"
-    native_copy_tensor(src_ptr, dst_ptr)
+    native_copy_tensor(dst_ptr, src_ptr)

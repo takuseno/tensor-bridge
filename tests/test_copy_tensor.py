@@ -55,9 +55,9 @@ def test_copy_tensor_with_assertion() -> None:
     a = torch.rand(2, 3, device="cuda:0")
     b = torch.rand(3, 2, device="cuda:0").transpose(0, 1)
     with pytest.raises(AssertionError):
-        copy_tensor_with_assertion(a, b)
+        copy_tensor_with_assertion(b, a)
 
     # make it contiguous
     b = b.contiguous()
-    copy_tensor_with_assertion(a, b)
+    copy_tensor_with_assertion(b, a)
     assert torch.all(a == b)
