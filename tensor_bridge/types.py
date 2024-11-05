@@ -4,6 +4,7 @@ import numpy as np
 
 if TYPE_CHECKING:
     import jax
+    import nnabla
     import torch
 
 
@@ -11,4 +12,4 @@ __all__ = ["NumpyArray", "Array"]
 
 
 NumpyArray = np.ndarray[Any, Any]
-Array = Union["torch.Tensor", "jax.Array"]
+Array = Union["torch.Tensor", "jax.Array", "nnabla.Variable"]

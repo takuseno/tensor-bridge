@@ -40,7 +40,8 @@ RUN apt-get update && \
     apt-get update && \
     rm -rf /var/lib/apt/lists/* && \
     rm -rf /tmp/* && \
-    pip install -U Cython==0.29.36 "jax[cuda12]==0.4.25" -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
+    pip install -U Cython==0.29.36 "jax[cuda12]==0.4.25" -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html && \
+    pip install nnabla nnabla-ext-cuda120
 
 # create work directory
 RUN mkdir /tensor-bridge

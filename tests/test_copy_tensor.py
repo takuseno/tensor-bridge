@@ -1,8 +1,10 @@
 import jax
 import jax.numpy as jnp
+import nnabla
 import numpy as np
 import pytest
 import torch
+from nnabla.ext_utils import get_extension_context
 
 from tensor_bridge import copy_tensor, copy_tensor_with_assertion
 
@@ -35,6 +37,21 @@ def test_copy_tensor_between_jax() -> None:
     assert jnp.all(a == c)
 
 
+def test_copy_tensor_between_nnabla() -> None:
+    ctx = get_extension_context("cudnn", device_id="0")
+    nnabla.set_default_context(ctx)
+    a = nnabla.Variable.from_numpy_array(np.random.random((2, 3, 4)))
+    b = nnabla.Variable.from_numpy_array(np.random.random((2, 3, 4)))
+    c = a.d.copy()
+
+    assert not np.all(a.d == b.d)
+
+    copy_tensor(b, a)
+
+    assert np.all(a.d == b.d)
+    assert np.all(a.d == c)
+
+
 def test_copy_tensor_between_torch_and_jax() -> None:
     torch_data = torch.rand(2, 3, 4, device="cuda:0")
 
@@ -48,6 +65,20 @@ def test_copy_tensor_between_torch_and_jax() -> None:
 
     assert np.all(torch_data.cpu().numpy() == np.array(jax_data))
     assert np.all(np.array(jax_data) == np.array(jax_data_copy))
+
+
+def test_copy_tensor_between_torch_and_nnabla() -> None:
+    torch_data = torch.rand(2, 3, 4, device="cuda:0")
+
+    nnabla_data = nnabla.Variable.from_numpy_array(
+        np.random.random((2, 3, 4)).astype(np.float32)
+    )
+
+    assert not np.all(torch_data.cpu().numpy() == nnabla_data.d)
+
+    copy_tensor(nnabla_data, torch_data)
+
+    assert np.all(torch_data.cpu().numpy() == nnabla_data.d)
 
 
 def test_copy_tensor_with_assertion() -> None:
